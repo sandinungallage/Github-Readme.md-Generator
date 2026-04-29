@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Form from './components/Form'
 import Preview from './components/Preview'
-import { FileCode2 } from 'lucide-react'
+import { FileCode2, Copy, Download } from 'lucide-react'
 import { generateReadme } from './lib/readmeEngine'
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(markdownContent)
+      // Custom elegant notification could go here
       alert('Markdown copied to clipboard!')
     } catch (err) {
       console.error('Failed to copy text: ', err)
@@ -39,29 +40,35 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+    <div className="min-h-screen flex flex-col relative overflow-hidden">
+      {/* Background glowing orbs */}
+      <div className="glow-orb top-[-10%] left-[-10%]"></div>
+      <div className="glow-orb-2 bottom-[-10%] right-[-10%]"></div>
+
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="max-w-[1600px] mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="bg-blue-600 text-white p-1.5 rounded-lg">
-              <FileCode2 size={24} />
+      <header className="glass-panel border-b-0 border-white/5 sticky top-0 z-10 backdrop-blur-2xl">
+        <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-br from-violet-500 to-cyan-500 p-2 rounded-xl shadow-lg shadow-violet-500/20">
+              <FileCode2 size={28} className="text-white" />
             </div>
-            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-black tracking-tight text-gradient animated-gradient-bg">
               README Engineer
             </h1>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-4">
             <button 
               onClick={handleCopy}
-              className="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer"
+              className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all duration-300 hover:scale-105 cursor-pointer"
             >
-              Copy Markdown
+              <Copy size={16} />
+              Copy
             </button>
             <button 
               onClick={handleDownload}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm cursor-pointer"
+              className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500 rounded-xl transition-all duration-300 shadow-lg hover:shadow-cyan-500/25 hover:scale-105 cursor-pointer"
             >
+              <Download size={16} />
               Download .md
             </button>
           </div>
@@ -69,23 +76,29 @@ function App() {
       </header>
 
       {/* Main Content: Split View */}
-      <main className="flex-1 max-w-[1600px] w-full mx-auto p-4 flex flex-col lg:flex-row gap-6 h-[calc(100vh-4rem)]">
+      <main className="flex-1 max-w-[1600px] w-full mx-auto p-6 flex flex-col lg:flex-row gap-8 h-[calc(100vh-5rem)]">
         {/* Left Column: Form Input */}
-        <section className="w-full lg:w-1/2 flex flex-col h-full bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="p-4 border-b border-slate-100 bg-slate-50/50">
-            <h2 className="font-semibold text-slate-800">Project Configuration</h2>
+        <section className="w-full lg:w-1/2 flex flex-col h-full glass-panel rounded-2xl overflow-hidden shadow-2xl">
+          <div className="p-5 border-b border-white/5 bg-white/5 flex items-center justify-between">
+            <h2 className="font-bold text-slate-200 tracking-wide flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-violet-500 animate-pulse"></span>
+              Configuration
+            </h2>
           </div>
-          <div className="p-4 overflow-y-auto flex-1 custom-scrollbar">
+          <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
             <Form projectData={projectData} setProjectData={setProjectData} />
           </div>
         </section>
 
         {/* Right Column: Live Preview */}
-        <section className="w-full lg:w-1/2 flex flex-col h-full bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="p-4 border-b border-slate-100 bg-slate-50/50">
-            <h2 className="font-semibold text-slate-800">Live Preview</h2>
+        <section className="w-full lg:w-1/2 flex flex-col h-full glass-panel rounded-2xl overflow-hidden shadow-2xl">
+          <div className="p-5 border-b border-white/5 bg-white/5 flex items-center justify-between">
+            <h2 className="font-bold text-slate-200 tracking-wide flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+              Live Preview
+            </h2>
           </div>
-          <div className="p-6 overflow-y-auto flex-1 prose prose-slate max-w-none bg-slate-50/30 custom-scrollbar">
+          <div className="p-8 overflow-y-auto flex-1 prose prose-invert prose-violet max-w-none bg-slate-950/30 custom-scrollbar">
             <Preview markdown={markdownContent} />
           </div>
         </section>
