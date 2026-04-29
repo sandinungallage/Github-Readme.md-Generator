@@ -16,6 +16,28 @@ function App() {
 
   const markdownContent = generateReadme(projectData)
 
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(markdownContent)
+      alert('Markdown copied to clipboard!')
+    } catch (err) {
+      console.error('Failed to copy text: ', err)
+      alert('Failed to copy markdown. Please try again.')
+    }
+  }
+
+  const handleDownload = () => {
+    const blob = new Blob([markdownContent], { type: 'text/markdown' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'README.md'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       {/* Header */}
@@ -30,10 +52,16 @@ function App() {
             </h1>
           </div>
           <div className="flex gap-3">
-            <button className="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
+            <button 
+              onClick={handleCopy}
+              className="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer"
+            >
               Copy Markdown
             </button>
-            <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm">
+            <button 
+              onClick={handleDownload}
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm cursor-pointer"
+            >
               Download .md
             </button>
           </div>
