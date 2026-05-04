@@ -9,6 +9,8 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import AboutUs from './pages/AboutUs'
+import ProfileReadme from './pages/ProfileReadme'
+import ProjectReadme from './pages/ProjectReadme'
 import { ToastContainer } from './components/common/Toast'
 import { Modal } from './components/common/Modal'
 
@@ -38,6 +40,9 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/about-us" element={<AboutUs />} />
+            {/* New Generator Routes */}
+            <Route path="/profile-readme" element={<ProfileReadme />} />
+            <Route path="/project-readme" element={<ProjectReadme />} />
           </Route>
 
           {/* Catch-all redirect */}

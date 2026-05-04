@@ -1,62 +1,102 @@
-export function generateReadme(data) {
-  const { title, description, projectType, features, techStack } = data;
+export function generateProjectReadme(data) {
+  const { title, description, techStack, features, repoUrl, license } = data;
 
   let readme = '';
 
   // 1. Header
-  readme += `# ${title || 'Project Title'}\n\n`;
+  readme += `# 🚀 ${title || 'Project Title'}\n\n`;
 
-  // 2. Badges
-  if (techStack && techStack.length > 0) {
-    readme += generateBadges(techStack) + '\n\n';
-  }
-
-  // 3. Description
+  // 2. Description
   if (description) {
-    readme += `## 📖 Description\n\n${description}\n\n`;
+    readme += `## 📖 Description\n${description}\n\n`;
   }
 
-  // 4. Features
-  if (features && features.length > 0) {
-    readme += `## ✨ Features\n\n`;
-    features.forEach(feature => {
-      readme += `- ${feature}\n`;
-    });
-    readme += '\n';
-  }
-
-  // 5. Tech Stack
+  // 3. Tech Stack
   if (techStack && techStack.length > 0) {
-    readme += `## 🛠️ Tech Stack\n\n`;
+    readme += `## ⚙️ Tech Stack\n`;
     techStack.forEach(tech => {
       readme += `- ${tech}\n`;
     });
     readme += '\n';
   }
 
-  // 6. Conditional Sections based on Project Type
-  if (projectType === 'api') {
-    readme += `## 🔌 API Endpoints\n\n`;
-    readme += `### GET /api/status\n- Description: Returns API status\n- Response: \`200 OK\`\n\n`;
+  // 4. Features
+  if (features && features.length > 0) {
+    readme += `## ✨ Features\n`;
+    features.forEach(feature => {
+      readme += `- ${feature}\n`;
+    });
+    readme += '\n';
   }
 
-  if (projectType === 'web' || projectType === 'frontend') {
-    readme += `## 📱 UI Previews\n\n`;
-    readme += `*Add screenshots of your UI here*\n\n`;
+  // 5. Project Structure (Mocked for now)
+  readme += `## 📂 Project Structure\n\`\`\`\nsrc/\n ├── components/\n ├── pages/\n ├── hooks/\n ├── store/\n\`\`\`\n\n`;
+
+  // 6. Installation
+  const defaultRepo = 'https://github.com/user/repo.git';
+  readme += `## 🚀 Installation\n\`\`\`bash\ngit clone ${repoUrl || defaultRepo}\ncd repo\nnpm install\nnpm run dev\n\`\`\`\n\n`;
+
+  // 7. License
+  if (license) {
+    readme += `## 📄 License\n${license}\n`;
+  } else {
+    readme += `## 📄 License\nMIT License\n`;
   }
-
-  // 7. Installation
-  readme += `## 🚀 Installation\n\n`;
-  readme += `\`\`\`bash\ngit clone https://github.com/user/repo.git\ncd repo\nnpm install\nnpm run dev\n\`\`\`\n\n`;
-
-  // 8. License
-  readme += `## 📄 License\n\nMIT License\n`;
 
   return readme;
 }
 
-function generateBadges(stack) {
-  return stack.map(tech => 
-    `![${tech}](https://img.shields.io/badge/${encodeURIComponent(tech)}-blue?style=for-the-badge)`
-  ).join(' ');
+export function generateProfileReadme(data) {
+  const { name, subtitle, currentWork, currentWorkLink, learning, skills, socials, email, funFact } = data;
+
+  let readme = '';
+
+  // 1. Header
+  readme += `# Hi 👋, I'm ${name || 'Developer'}\n`;
+  if (subtitle) {
+    readme += `### ${subtitle}\n`;
+  }
+  readme += '\n';
+
+  // 2. Current Work
+  if (currentWork) {
+    readme += `## 🔭 Current Work\n`;
+    if (currentWorkLink) {
+      readme += `- [${currentWork}](${currentWorkLink})\n\n`;
+    } else {
+      readme += `- ${currentWork}\n\n`;
+    }
+  }
+
+  // 3. Learning
+  if (learning) {
+    readme += `## 🌱 Learning\n- ${learning}\n\n`;
+  }
+
+  // 4. Skills
+  if (skills && skills.length > 0) {
+    readme += `## 💬 Ask me about\n`;
+    readme += `- ${skills.join(', ')}\n\n`;
+  }
+
+  // 5. Reach Me
+  if (email) {
+    readme += `## 📫 Reach Me\n- ${email}\n\n`;
+  }
+
+  // 6. Connect With Me
+  if (socials && socials.length > 0) {
+    readme += `## 🌐 Connect With Me\n`;
+    socials.forEach(social => {
+      readme += `- [${social.platform}](${social.url})\n`;
+    });
+    readme += '\n';
+  }
+
+  // 7. Fun Fact
+  if (funFact) {
+    readme += `## ⚡ Fun Fact\n${funFact}\n`;
+  }
+
+  return readme;
 }
