@@ -25,11 +25,27 @@ export default function ProfileReadme() {
     subtitle: 'Frontend Engineer & UI/UX Designer',
     currentWork: 'README Engineer',
     currentWorkLink: 'https://github.com',
+    collab: '',
+    collabLink: '',
+    help: '',
+    helpLink: '',
     learning: 'Advanced React Patterns, Framer Motion',
+    askMe: 'React, Vue, GSAP',
+    portfolio: 'https://portfolio.com',
+    blog: '',
+    resume: '',
     skills: ['JavaScript', 'React', 'Tailwind CSS', 'Node.js'],
     email: 'hello@example.com',
-    socials: [{ platform: 'GitHub', url: 'https://github.com' }],
-    funFact: 'I drink way too much coffee ☕'
+    socials: [{ platform: 'GitHub', url: 'https://github.com/sandinungallage' }],
+    funFact: 'I drink way too much coffee ☕',
+    addons: {
+      visitors: true,
+      trophy: false,
+      stats: true,
+      topSkills: true,
+      streak: false,
+      twitterBadge: false
+    }
   })
 
   const [newSkill, setNewSkill] = useState('')
@@ -39,8 +55,15 @@ export default function ProfileReadme() {
   const markdownContent = generateProfileReadme(profileData)
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setProfileData(prev => ({ ...prev, [name]: value }))
+    const { name, value, type, checked } = e.target
+    if (type === 'checkbox') {
+      setProfileData(prev => ({
+        ...prev,
+        addons: { ...prev.addons, [name]: checked }
+      }))
+    } else {
+      setProfileData(prev => ({ ...prev, [name]: value }))
+    }
   }
 
   const addSkill = (e) => {
@@ -156,7 +179,7 @@ export default function ProfileReadme() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Current Work</label>
-                  <Input name="currentWork" value={profileData.currentWork} onChange={handleChange} placeholder="e.g. Acme Corp" />
+                  <Input name="currentWork" value={profileData.currentWork} onChange={handleChange} placeholder="Project Name" />
                 </div>
                 <div className="space-y-1.5">
                   <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Work Link</label>
@@ -164,14 +187,59 @@ export default function ProfileReadme() {
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Currently Learning</label>
-                <Input name="learning" value={profileData.learning} onChange={handleChange} placeholder="e.g. Rust, WebAssembly" />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Collaborating On</label>
+                  <Input name="collab" value={profileData.collab} onChange={handleChange} placeholder="Project Name" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Collab Link</label>
+                  <Input name="collabLink" value={profileData.collabLink} onChange={handleChange} placeholder="https://..." />
+                </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Email Address</label>
-                <Input name="email" value={profileData.email} onChange={handleChange} placeholder="hello@example.com" />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Help With</label>
+                  <Input name="help" value={profileData.help} onChange={handleChange} placeholder="Project Name" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Help Link</label>
+                  <Input name="helpLink" value={profileData.helpLink} onChange={handleChange} placeholder="https://..." />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Learning</label>
+                  <Input name="learning" value={profileData.learning} onChange={handleChange} placeholder="e.g. Rust, Vue" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Ask Me About</label>
+                  <Input name="askMe" value={profileData.askMe} onChange={handleChange} placeholder="e.g. React, UI/UX" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Portfolio URL</label>
+                  <Input name="portfolio" value={profileData.portfolio} onChange={handleChange} placeholder="https://..." />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Blog URL</label>
+                  <Input name="blog" value={profileData.blog} onChange={handleChange} placeholder="https://..." />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Resume URL</label>
+                  <Input name="resume" value={profileData.resume} onChange={handleChange} placeholder="https://..." />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Email Address</label>
+                  <Input name="email" value={profileData.email} onChange={handleChange} placeholder="hello@example.com" />
+                </div>
               </div>
 
               <div className="space-y-1.5">
@@ -211,18 +279,25 @@ export default function ProfileReadme() {
                     <option>GitHub</option>
                     <option>LinkedIn</option>
                     <option>Twitter</option>
-                    <option>Portfolio</option>
+                    <option>Instagram</option>
+                    <option>Dribbble</option>
+                    <option>Behance</option>
+                    <option>Kaggle</option>
+                    <option>Medium</option>
+                    <option>Dev.to</option>
+                    <option>Hashnode</option>
+                    <option>YouTube</option>
                   </select>
-                  <Input className="flex-1" value={newSocialUrl} onChange={(e) => setNewSocialUrl(e.target.value)} placeholder="URL..." />
+                  <Input className="flex-1" value={newSocialUrl} onChange={(e) => setNewSocialUrl(e.target.value)} placeholder="URL or Username..." />
                   <Button type="submit" variant="secondary" size="icon"><Plus size={18} /></Button>
                 </form>
                 <ul className="space-y-2 pt-1">
                   {profileData.socials.map((social, i) => (
                     <li key={i} className="group flex items-center justify-between bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 px-3 py-2 rounded-md text-sm text-slate-700 dark:text-zinc-300">
-                      <span className="flex items-center gap-2 font-medium">
-                        {social.platform}: <a href={social.url} target="_blank" rel="noopener noreferrer" className="font-normal text-blue-500 hover:underline">{social.url}</a>
+                      <span className="flex items-center gap-2 font-medium line-clamp-1">
+                        {social.platform}: <a href={social.url} target="_blank" rel="noopener noreferrer" className="font-normal text-blue-500 hover:underline line-clamp-1">{social.url}</a>
                       </span>
-                      <button type="button" onClick={() => removeSocial(i)} className="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button type="button" onClick={() => removeSocial(i)} className="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity ml-2">
                         <X size={16} />
                       </button>
                     </li>
@@ -230,6 +305,30 @@ export default function ProfileReadme() {
                 </ul>
               </div>
 
+              <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-zinc-800">
+                <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Add-ons & Badges</label>
+                <div className="grid grid-cols-2 gap-3">
+                  {Object.entries({
+                    visitors: 'Visitors Count Badge',
+                    trophy: 'GitHub Trophy',
+                    stats: 'GitHub Stats Card',
+                    topSkills: 'Top Skills Card',
+                    streak: 'GitHub Streak Stats',
+                    twitterBadge: 'Twitter Badge'
+                  }).map(([key, label]) => (
+                    <label key={key} className="flex items-center gap-2 text-sm text-slate-600 dark:text-zinc-400 cursor-pointer hover:text-slate-900 dark:hover:text-zinc-200">
+                      <input
+                        type="checkbox"
+                        name={key}
+                        checked={profileData.addons[key]}
+                        onChange={handleChange}
+                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-700 dark:bg-zinc-900"
+                      />
+                      {label}
+                    </label>
+                  ))}
+                </div>
+              </div>
             </div>
           </Card>
         </motion.div>
