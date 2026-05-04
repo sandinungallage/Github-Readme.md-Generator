@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FileCode2, LayoutDashboard, User, LogOut, Bell, ChevronDown, Clock, Info } from 'lucide-react'
+import { FileCode2, LayoutDashboard, User, LogOut, Bell, ChevronDown, Clock, Info, Rocket } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
 import { useState, useRef, useEffect } from 'react'
 
@@ -20,6 +20,26 @@ export default function DashboardLayout() {
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
+
+  const getDynamicButtonParams = (pathname) => {
+    switch (pathname) {
+      case '/':
+      case '/dashboard':
+        return { text: 'Dashboard', icon: LayoutDashboard, link: '/dashboard' }
+      case '/about-us':
+        return { text: 'About Us', icon: Info, link: '/about-us' }
+      case '/profile':
+        return { text: 'Profile', icon: User, link: '/profile' }
+      case '/profile-readme':
+        return { text: 'Profile README', icon: User, link: '/profile-readme' }
+      case '/project-readme':
+        return { text: 'Project README', icon: Rocket, link: '/project-readme' }
+      default:
+        return { text: 'Dashboard', icon: LayoutDashboard, link: '/dashboard' }
+    }
+  }
+
+  const dynamicBtn = getDynamicButtonParams(location.pathname)
 
   return (
     <div className="min-h-screen flex flex-col font-sans relative overflow-hidden bg-transparent">
@@ -101,15 +121,11 @@ export default function DashboardLayout() {
 
             <nav className="hidden md:flex items-center gap-1 ml-6 border-l border-slate-200 dark:border-zinc-700 pl-6">
               <Link
-                to="/dashboard"
-                className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
-                  location.pathname === '/dashboard'
-                    ? 'bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100'
-                }`}
+                to={dynamicBtn.link}
+                className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-500/20"
               >
-                <LayoutDashboard size={16} />
-                Dashboard
+                <dynamicBtn.icon size={16} />
+                {dynamicBtn.text}
               </Link>
             </nav>
           </div>
