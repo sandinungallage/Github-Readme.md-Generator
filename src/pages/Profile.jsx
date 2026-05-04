@@ -1,14 +1,29 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Moon, Sun, User as UserIcon, Mail } from 'lucide-react'
 import { useThemeStore } from '../store/themeStore'
 import { useAuthStore } from '../store/authStore'
+import { useToastStore } from '../store/toastStore'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/common/Card'
 import { Button } from '../components/common/Button'
 import { Input } from '../components/common/Input'
 
 export default function Profile() {
   const { theme, toggleTheme } = useThemeStore()
-  const { user } = useAuthStore()
+  const { user, updateProfile } = useAuthStore()
+  const addToast = useToastStore((state) => state.addToast)
+
+  const [name, setName] = useState(user?.name || '')
+  const [email, setEmail] = useState(user?.email || '')
+
+  const handleSave = () => {
+    updateProfile({ name, email })
+    addToast({
+      title: 'Profile Updated',
+      description: 'Your account details have been saved successfully.',
+      type: 'success',
+    })
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -43,15 +58,15 @@ export default function Profile() {
                 <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
                   <UserIcon size={16} /> Name
                 </label>
-                <Input defaultValue={user?.name} />
+                <Input value={name} onChange={(e) => setName(e.target.value)} />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
                   <Mail size={16} /> Email
                 </label>
-                <Input defaultValue={user?.email} />
+                <Input value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
-              <Button className="mt-4">Save Changes</Button>
+              <Button className="mt-4" onClick={handleSave}>Save Changes</Button>
             </CardContent>
           </Card>
         </motion.div>
