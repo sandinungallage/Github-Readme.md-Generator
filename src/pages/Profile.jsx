@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Moon, Sun, User as UserIcon, Mail, Camera } from 'lucide-react'
+import { Moon, Sun, User as UserIcon, Mail, Camera, LogOut } from 'lucide-react'
 import { useThemeStore } from '../store/themeStore'
 import { useAuthStore } from '../store/authStore'
 import { useToastStore } from '../store/toastStore'
@@ -10,7 +10,7 @@ import { Input } from '../components/common/Input'
 
 export default function Profile() {
   const { theme, toggleTheme } = useThemeStore()
-  const { user, updateProfile } = useAuthStore()
+  const { user, updateProfile, logout } = useAuthStore()
   const addToast = useToastStore((state) => state.addToast)
 
   const [name, setName] = useState(user?.name || '')
@@ -129,6 +129,22 @@ export default function Profile() {
                 </div>
                 <Button variant="outline" size="icon" onClick={toggleTheme} className="rounded-full">
                   {theme === 'dark' ? <Sun size={20} className="text-yellow-500" /> : <Moon size={20} className="text-slate-700" />}
+                </Button>
+              </div>
+
+              <div className="h-px bg-slate-200 dark:bg-zinc-800" />
+              
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-medium text-red-600 dark:text-red-400">Log Out</h4>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Sign out of your account securely.</p>
+                </div>
+                <Button 
+                  variant="outline" 
+                  onClick={logout} 
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 border-red-200 dark:border-red-900/30"
+                >
+                  <LogOut size={16} className="mr-2" /> Log Out
                 </Button>
               </div>
             </CardContent>

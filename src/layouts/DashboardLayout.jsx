@@ -219,13 +219,7 @@ export default function DashboardLayout() {
               </span>
             </Link>
 
-            <button 
-              onClick={logout}
-              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-full transition-colors ml-1"
-              title="Logout"
-            >
-              <LogOut size={18} />
-            </button>
+
           </div>
         </div>
       </header>
