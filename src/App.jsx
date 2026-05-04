@@ -11,6 +11,7 @@ import Profile from './pages/Profile'
 import AboutUs from './pages/AboutUs'
 import ProfileReadme from './pages/ProfileReadme'
 import ProjectReadme from './pages/ProjectReadme'
+import RecentWorks from './pages/RecentWorks'
 import { ToastContainer } from './components/common/Toast'
 import { Modal } from './components/common/Modal'
 
@@ -43,6 +44,7 @@ function App() {
             {/* New Generator Routes */}
             <Route path="/profile-readme" element={<ProfileReadme />} />
             <Route path="/project-readme" element={<ProjectReadme />} />
+            <Route path="/recent-works" element={<RecentWorks />} />
           </Route>
 
           {/* Catch-all redirect */}

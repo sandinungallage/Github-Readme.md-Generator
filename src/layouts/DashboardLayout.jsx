@@ -44,6 +44,8 @@ export default function DashboardLayout() {
         return { text: 'Profile README', icon: User, link: '/profile-readme' }
       case '/project-readme':
         return { text: 'Project README', icon: Rocket, link: '/project-readme' }
+      case '/recent-works':
+        return { text: 'Recent Works', icon: Clock, link: '/recent-works' }
       default:
         return { text: 'Dashboard', icon: LayoutDashboard, link: '/dashboard' }
     }
@@ -107,13 +109,14 @@ export default function DashboardLayout() {
                         <User size={16} className="text-slate-500 dark:text-zinc-400" />
                         Profile
                       </Link>
-                      <button 
+                      <Link 
+                        to="/recent-works"
                         onClick={() => setLogoMenuOpen(false)}
                         className="flex w-full items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg text-slate-700 hover:bg-slate-100 dark:text-zinc-200 dark:hover:bg-zinc-800 transition-colors"
                       >
                         <Clock size={16} className="text-slate-500 dark:text-zinc-400" />
                         Recent Works
-                      </button>
+                      </Link>
                       <div className="h-px bg-slate-200 dark:bg-zinc-800 my-1 mx-2" />
                       <Link 
                         to="/about-us"
@@ -204,8 +207,12 @@ export default function DashboardLayout() {
             <div className="h-6 w-[1px] bg-slate-200 dark:bg-zinc-800 mx-1"></div>
 
             <Link to="/profile" className="flex items-center gap-3 p-1 pr-3 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors group">
-              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/50 dark:to-indigo-900/50 flex items-center justify-center text-blue-700 dark:text-blue-400 font-semibold text-sm shadow-sm border border-white/50 dark:border-zinc-700/50 group-hover:scale-105 transition-transform">
-                {user?.name?.charAt(0) || 'U'}
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/50 dark:to-indigo-900/50 flex items-center justify-center text-blue-700 dark:text-blue-400 font-semibold text-sm shadow-sm border border-white/50 dark:border-zinc-700/50 group-hover:scale-105 transition-transform overflow-hidden">
+                {user?.avatar ? (
+                  <img src={user.avatar} alt="Profile" className="h-full w-full object-cover" />
+                ) : (
+                  user?.name?.charAt(0) || 'U'
+                )}
               </div>
               <span className="text-sm font-medium text-slate-700 dark:text-zinc-300 hidden sm:block">
                 {user?.name || 'User'}

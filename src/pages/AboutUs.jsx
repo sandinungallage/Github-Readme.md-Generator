@@ -5,10 +5,12 @@ import { Card, CardContent } from '../components/common/Card'
 export default function AboutUs() {
   const team = [
     {
-      name: "Sandin Unethmika",
+      name: "Sandinu Nethmika",
       role: "Lead Engineer & Founder",
       image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sandin",
-      github: "https://github.com/sandinungallage"
+      github: "https://github.com/sandinungallage",
+      linkedin: "https://www.linkedin.com/in/sandinungallage",
+      email: "mailto:sandinunethmika.g@gmail.com"
     }
   ]
 
@@ -29,7 +31,7 @@ export default function AboutUs() {
         >
           <Code2 size={32} />
         </motion.div>
-        <motion.h1 
+        <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -37,7 +39,7 @@ export default function AboutUs() {
         >
           Documentation, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">Elevated.</span>
         </motion.h1>
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -48,7 +50,7 @@ export default function AboutUs() {
       </div>
 
       {/* Mission Section */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
@@ -80,7 +82,7 @@ export default function AboutUs() {
       </motion.div>
 
       {/* Team Section */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
@@ -102,16 +104,13 @@ export default function AboutUs() {
                 <h3 className="text-xl font-bold text-slate-900 dark:text-zinc-100">{member.name}</h3>
                 <p className="text-sm font-medium text-blue-600 dark:text-blue-400 mb-4">{member.role}</p>
                 <div className="flex justify-center gap-3">
-                  <a href={member.github} target="_blank" rel="noopener noreferrer" className="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors bg-slate-50 dark:bg-zinc-900 rounded-full">
+                  <a href={member.github} target="_blank" rel="noopener noreferrer" title="GitHub" className="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors bg-slate-50 dark:bg-zinc-900 rounded-full">
                     <Link2 size={18} />
                   </a>
-                  <a href="#" className="p-2 text-slate-400 hover:text-blue-500 transition-colors bg-slate-50 dark:bg-zinc-900 rounded-full">
+                  <a href={member.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn" className="p-2 text-slate-400 hover:text-blue-500 transition-colors bg-slate-50 dark:bg-zinc-900 rounded-full">
                     <Link2 size={18} />
                   </a>
-                  <a href="#" className="p-2 text-slate-400 hover:text-blue-700 transition-colors bg-slate-50 dark:bg-zinc-900 rounded-full">
-                    <Link2 size={18} />
-                  </a>
-                  <a href="#" className="p-2 text-slate-400 hover:text-red-500 transition-colors bg-slate-50 dark:bg-zinc-900 rounded-full">
+                  <a href={member.email} className="p-2 text-slate-400 hover:text-red-500 transition-colors bg-slate-50 dark:bg-zinc-900 rounded-full">
                     <Mail size={18} />
                   </a>
                 </div>

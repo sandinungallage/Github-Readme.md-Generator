@@ -1,15 +1,26 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Copy, Download, Plus, X } from 'lucide-react'
+import { Copy, Download, Plus, X, Save } from 'lucide-react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { generateProfileReadme } from '../lib/readmeEngine'
 import { Button } from '../components/common/Button'
 import { Input } from '../components/common/Input'
 import { Card, CardContent } from '../components/common/Card'
 import { useToastStore } from '../store/toastStore'
+import { useProjectStore } from '../store/projectStore'
 import Preview from '../components/Preview'
 
 export default function ProfileReadme() {
-  const [profileData, setProfileData] = useState({
+  const location = useLocation()
+  const navigate = useNavigate()
+  const addToast = useToastStore((state) => state.addToast)
+  const saveProject = useProjectStore((state) => state.saveProject)
+
+  // Initialize from location state if editing an existing project
+  const existingProject = location.state?.project
+  const [projectId] = useState(existingProject?.id || crypto.randomUUID())
+
+  const [profileData, setProfileData] = useState(existingProject?.data || {
     name: 'Sandin Unethmika',
     subtitle: 'Frontend Engineer & UI/UX Designer',
     currentWork: 'README Engineer',
@@ -25,7 +36,6 @@ export default function ProfileReadme() {
   const [newSocialPlatform, setNewSocialPlatform] = useState('LinkedIn')
   const [newSocialUrl, setNewSocialUrl] = useState('')
 
-  const addToast = useToastStore((state) => state.addToast)
   const markdownContent = generateProfileReadme(profileData)
 
   const handleChange = (e) => {
@@ -58,6 +68,17 @@ export default function ProfileReadme() {
     setProfileData(prev => ({ ...prev, socials: prev.socials.filter((_, i) => i !== index) }))
   }
 
+  const handleSaveDraft = () => {
+    saveProject({
+      id: projectId,
+      title: `${profileData.name || 'Untitled'}'s Profile`,
+      type: 'profile',
+      status: 'draft',
+      data: profileData
+    })
+    addToast({ title: 'Draft Saved', description: 'Your profile README has been saved to Recent Works.', type: 'success' })
+  }
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(markdownContent)
@@ -68,6 +89,14 @@ export default function ProfileReadme() {
   }
 
   const handleDownload = () => {
+    saveProject({
+      id: projectId,
+      title: `${profileData.name || 'Untitled'}'s Profile`,
+      type: 'profile',
+      status: 'completed',
+      data: profileData
+    })
+
     const blob = new Blob([markdownContent], { type: 'text/markdown' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -77,7 +106,8 @@ export default function ProfileReadme() {
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-    addToast({ title: 'Downloaded', description: 'Your profile README is downloading.', type: 'info' })
+
+    addToast({ title: 'Downloaded', description: 'Your profile README is downloading and saved as completed.', type: 'info' })
   }
 
   return (
@@ -87,8 +117,12 @@ export default function ProfileReadme() {
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-zinc-100">Profile README</h1>
           <p className="text-slate-500 dark:text-zinc-400">Generate a beautiful GitHub profile landing page.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <Button variant="outline" onClick={handleCopy}>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="outline" onClick={handleSaveDraft} className="bg-white dark:bg-zinc-900">
+            <Save className="mr-2 h-4 w-4" />
+            Save Draft
+          </Button>
+          <Button variant="outline" onClick={handleCopy} className="bg-white dark:bg-zinc-900">
             <Copy className="mr-2 h-4 w-4" />
             Copy
           </Button>

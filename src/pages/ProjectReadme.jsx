@@ -1,15 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Copy, Download, Plus, X } from 'lucide-react'
+import { Copy, Download, Plus, X, Save } from 'lucide-react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { generateProjectReadme } from '../lib/readmeEngine'
 import { Button } from '../components/common/Button'
 import { Input } from '../components/common/Input'
 import { Card, CardContent } from '../components/common/Card'
 import { useToastStore } from '../store/toastStore'
-import Preview from '../components/Preview' // Assuming this still exists and works
+import { useProjectStore } from '../store/projectStore'
+import Preview from '../components/Preview'
 
 export default function ProjectReadme() {
-  const [projectData, setProjectData] = useState({
+  const location = useLocation()
+  const navigate = useNavigate()
+  const addToast = useToastStore((state) => state.addToast)
+  const saveProject = useProjectStore((state) => state.saveProject)
+
+  // Initialize from location state if editing an existing project
+  const existingProject = location.state?.project
+  const [projectId] = useState(existingProject?.id || crypto.randomUUID())
+
+  const [projectData, setProjectData] = useState(existingProject?.data || {
     title: 'Awesome Project',
     description: 'A fantastic project that does amazing things.',
     techStack: ['React', 'Node.js'],
@@ -21,7 +32,6 @@ export default function ProjectReadme() {
   const [newTech, setNewTech] = useState('')
   const [newFeature, setNewFeature] = useState('')
 
-  const addToast = useToastStore((state) => state.addToast)
   const markdownContent = generateProjectReadme(projectData)
 
   const handleChange = (e) => {
@@ -51,6 +61,17 @@ export default function ProjectReadme() {
     setProjectData(prev => ({ ...prev, features: prev.features.filter((_, i) => i !== index) }))
   }
 
+  const handleSaveDraft = () => {
+    saveProject({
+      id: projectId,
+      title: projectData.title || 'Untitled Project',
+      type: 'project',
+      status: 'draft',
+      data: projectData
+    })
+    addToast({ title: 'Draft Saved', description: 'Your project has been saved to Recent Works.', type: 'success' })
+  }
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(markdownContent)
@@ -61,6 +82,14 @@ export default function ProjectReadme() {
   }
 
   const handleDownload = () => {
+    saveProject({
+      id: projectId,
+      title: projectData.title || 'Untitled Project',
+      type: 'project',
+      status: 'completed',
+      data: projectData
+    })
+
     const blob = new Blob([markdownContent], { type: 'text/markdown' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -70,7 +99,8 @@ export default function ProjectReadme() {
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-    addToast({ title: 'Downloaded', description: 'Your README file is downloading.', type: 'info' })
+    
+    addToast({ title: 'Downloaded', description: 'Your README is downloading and saved as completed.', type: 'info' })
   }
 
   return (
@@ -80,8 +110,12 @@ export default function ProjectReadme() {
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-zinc-100">Project README</h1>
           <p className="text-slate-500 dark:text-zinc-400">Configure your repository documentation.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <Button variant="outline" onClick={handleCopy}>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="outline" onClick={handleSaveDraft} className="bg-white dark:bg-zinc-900">
+            <Save className="mr-2 h-4 w-4" />
+            Save Draft
+          </Button>
+          <Button variant="outline" onClick={handleCopy} className="bg-white dark:bg-zinc-900">
             <Copy className="mr-2 h-4 w-4" />
             Copy
           </Button>

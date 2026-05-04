@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Moon, Sun, User as UserIcon, Mail } from 'lucide-react'
+import { Moon, Sun, User as UserIcon, Mail, Camera } from 'lucide-react'
 import { useThemeStore } from '../store/themeStore'
 import { useAuthStore } from '../store/authStore'
 import { useToastStore } from '../store/toastStore'
@@ -15,6 +15,7 @@ export default function Profile() {
 
   const [name, setName] = useState(user?.name || '')
   const [email, setEmail] = useState(user?.email || '')
+  const fileInputRef = useRef(null)
 
   const handleSave = () => {
     updateProfile({ name, email })
@@ -23,6 +24,24 @@ export default function Profile() {
       description: 'Your account details have been saved successfully.',
       type: 'success',
     })
+  }
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      addToast({ title: 'Error', description: 'Please select an image file.', type: 'error' })
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      const base64String = event.target.result
+      updateProfile({ avatar: base64String })
+      addToast({ title: 'Avatar Updated', description: 'Your new profile picture is saved.', type: 'success' })
+    }
+    reader.readAsDataURL(file)
   }
 
   return (
@@ -45,9 +64,30 @@ export default function Profile() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-4 mb-6">
-                <div className="h-20 w-20 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-3xl font-bold text-white shadow-lg">
-                  {user?.name?.charAt(0) || 'U'}
+                
+                <div 
+                  className="relative h-20 w-20 rounded-full group cursor-pointer overflow-hidden bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg border-2 border-white dark:border-zinc-800"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {user?.avatar ? (
+                    <img src={user.avatar} alt="Profile" className="h-full w-full object-cover" />
+                  ) : (
+                    <span className="text-3xl font-bold text-white">{user?.name?.charAt(0) || 'U'}</span>
+                  )}
+                  
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Camera className="text-white" size={24} />
+                  </div>
+                  <input 
+                    type="file" 
+                    ref={fileInputRef} 
+                    className="hidden" 
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                  />
                 </div>
+
                 <div>
                   <h3 className="font-medium text-lg text-slate-900 dark:text-slate-100">{user?.name || 'User'}</h3>
                   <p className="text-slate-500 dark:text-slate-400">{user?.email || 'user@example.com'}</p>
