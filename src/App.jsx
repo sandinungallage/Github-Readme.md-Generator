@@ -8,6 +8,7 @@ import DashboardLayout from './layouts/DashboardLayout'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
+import AboutUs from './pages/AboutUs'
 import { ToastContainer } from './components/common/Toast'
 import { Modal } from './components/common/Modal'
 
@@ -36,6 +37,7 @@ function App() {
           <Route element={isAuthenticated ? <DashboardLayout /> : <Navigate to="/login" replace />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/about-us" element={<AboutUs />} />
           </Route>
 
           {/* Catch-all redirect */}
