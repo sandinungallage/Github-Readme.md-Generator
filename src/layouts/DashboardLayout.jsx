@@ -11,10 +11,20 @@ export default function DashboardLayout() {
   const [logoMenuOpen, setLogoMenuOpen] = useState(false)
   const menuRef = useRef(null)
 
+  const [notificationsOpen, setNotificationsOpen] = useState(false)
+  const notifRef = useRef(null)
+  const [notifications, setNotifications] = useState([
+    { id: 1, title: 'Welcome to README Eng.!', time: 'Just now' },
+    { id: 2, title: 'Your profile looks great.', time: '1h ago' }
+  ])
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setLogoMenuOpen(false)
+      }
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setNotificationsOpen(false)
       }
     }
     document.addEventListener("mousedown", handleClickOutside)
@@ -131,10 +141,65 @@ export default function DashboardLayout() {
           </div>
           
           <div className="flex items-center gap-4">
-            <button className="text-slate-500 hover:text-slate-900 dark:hover:text-zinc-100 relative transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-800">
-              <Bell size={20} />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-zinc-900"></span>
-            </button>
+            <div className="relative" ref={notifRef}>
+              <button 
+                onClick={() => setNotificationsOpen(!notificationsOpen)}
+                className="text-slate-500 hover:text-slate-900 dark:hover:text-zinc-100 relative transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-800 focus:outline-none"
+              >
+                <Bell size={20} />
+                {notifications.length > 0 && (
+                  <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-zinc-900"></span>
+                )}
+              </button>
+
+              <AnimatePresence>
+                {notificationsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 mt-3 w-80 rounded-xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-xl overflow-hidden z-50 flex flex-col"
+                  >
+                    <div className="p-4 border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between">
+                      <h3 className="font-semibold text-slate-900 dark:text-zinc-100">Notifications</h3>
+                      <span className="text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400 px-2 py-0.5 rounded-full">
+                        {notifications.length} New
+                      </span>
+                    </div>
+                    
+                    <div className="max-h-80 overflow-y-auto custom-scrollbar flex flex-col">
+                      {notifications.length === 0 ? (
+                        <div className="p-6 text-center text-slate-500 dark:text-zinc-400 text-sm">
+                          No new notifications.
+                        </div>
+                      ) : (
+                        notifications.map((notif) => (
+                          <div key={notif.id} className="p-4 border-b border-slate-100 dark:border-zinc-800/50 hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors flex gap-3">
+                            <div className="mt-1 w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
+                            <div>
+                              <p className="text-sm font-medium text-slate-800 dark:text-zinc-200">{notif.title}</p>
+                              <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">{notif.time}</p>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+
+                    {notifications.length > 0 && (
+                      <div className="p-2 border-t border-slate-200 dark:border-zinc-800">
+                        <button 
+                          onClick={() => setNotifications([])}
+                          className="w-full py-2 text-sm font-medium text-center text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                        >
+                          Clear all
+                        </button>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
             
             <div className="h-6 w-[1px] bg-slate-200 dark:bg-zinc-800 mx-1"></div>
 
