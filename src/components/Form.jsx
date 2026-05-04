@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Plus, X } from 'lucide-react'
+import { Input } from './common/Input'
+import { Button } from './common/Button'
 
 export default function Form({ projectData, setProjectData }) {
   const [newFeature, setNewFeature] = useState('')
@@ -41,43 +43,41 @@ export default function Form({ projectData, setProjectData }) {
   return (
     <div className="space-y-8">
       {/* Basic Info */}
-      <div className="space-y-5 bg-white/5 p-6 rounded-2xl border border-white/5 shadow-inner">
-        <h3 className="font-semibold text-white text-lg flex items-center gap-2">
-          <span className="text-violet-400">01.</span> Basic Information
+      <div className="space-y-4">
+        <h3 className="font-semibold text-slate-900 dark:text-zinc-100 text-lg border-b border-slate-200 dark:border-zinc-800 pb-2">
+          Basic Information
         </h3>
         
         <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5 ml-1">Project Title</label>
-            <input 
-              type="text" 
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Project Title</label>
+            <Input 
               name="title"
               value={projectData.title}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 rounded-xl glass-input"
               placeholder="e.g. SmartCampus API"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5 ml-1">Description</label>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Description</label>
             <textarea 
               name="description"
               value={projectData.description}
               onChange={handleChange}
               rows={3}
-              className="w-full px-4 py-2.5 rounded-xl glass-input resize-none"
+              className="flex w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-950 dark:placeholder:text-zinc-500 resize-none"
               placeholder="A short, catchy description of your project..."
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5 ml-1">Project Type</label>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300">Project Type</label>
             <select 
               name="projectType"
               value={projectData.projectType}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 rounded-xl glass-input appearance-none bg-slate-900/80 cursor-pointer"
+              className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-950"
             >
               <option value="web">Web Application</option>
               <option value="api">REST API / Backend</option>
@@ -90,69 +90,65 @@ export default function Form({ projectData, setProjectData }) {
       </div>
 
       {/* Tech Stack */}
-      <div className="space-y-5 bg-white/5 p-6 rounded-2xl border border-white/5 shadow-inner">
-        <h3 className="font-semibold text-white text-lg flex items-center gap-2">
-          <span className="text-cyan-400">02.</span> Tech Stack
+      <div className="space-y-4">
+        <h3 className="font-semibold text-slate-900 dark:text-zinc-100 text-lg border-b border-slate-200 dark:border-zinc-800 pb-2">
+          Tech Stack
         </h3>
         
         <form onSubmit={addTech} className="flex gap-3">
-          <input 
-            type="text" 
+          <Input 
             value={newTech}
             onChange={(e) => setNewTech(e.target.value)}
-            className="flex-1 px-4 py-2.5 rounded-xl glass-input"
             placeholder="e.g. React, Node.js, MongoDB"
           />
-          <button type="submit" className="bg-white/10 text-white px-4 rounded-xl hover:bg-cyan-500/20 border border-white/10 hover:border-cyan-500/50 hover:text-cyan-400 transition-all cursor-pointer">
-            <Plus size={20} />
-          </button>
+          <Button type="submit" variant="secondary" size="icon">
+            <Plus size={18} />
+          </Button>
         </form>
 
-        <div className="flex flex-wrap gap-2.5">
+        <div className="flex flex-wrap gap-2 pt-2">
           {projectData.techStack.map((tech, i) => (
-            <div key={i} className="group flex items-center gap-2 bg-slate-900/80 border border-cyan-500/30 px-3.5 py-1.5 rounded-full text-sm font-medium text-cyan-100 shadow-[0_0_10px_rgba(6,182,212,0.1)] hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:border-cyan-400 transition-all">
+            <div key={i} className="flex items-center gap-1.5 bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 px-3 py-1 rounded-md text-sm font-medium text-slate-700 dark:text-zinc-300">
               {tech}
-              <button type="button" onClick={() => removeTech(i)} className="text-cyan-500/50 hover:text-red-400 transition-colors cursor-pointer">
+              <button type="button" onClick={() => removeTech(i)} className="text-slate-400 hover:text-red-500 dark:text-zinc-500 dark:hover:text-red-400 transition-colors">
                 <X size={14} />
               </button>
             </div>
           ))}
-          {projectData.techStack.length === 0 && <span className="text-sm text-slate-500 italic ml-1">No technologies added yet.</span>}
+          {projectData.techStack.length === 0 && <span className="text-sm text-slate-500">No technologies added yet.</span>}
         </div>
       </div>
 
       {/* Features */}
-      <div className="space-y-5 bg-white/5 p-6 rounded-2xl border border-white/5 shadow-inner">
-        <h3 className="font-semibold text-white text-lg flex items-center gap-2">
-          <span className="text-violet-400">03.</span> Key Features
+      <div className="space-y-4">
+        <h3 className="font-semibold text-slate-900 dark:text-zinc-100 text-lg border-b border-slate-200 dark:border-zinc-800 pb-2">
+          Key Features
         </h3>
         
         <form onSubmit={addFeature} className="flex gap-3">
-          <input 
-            type="text" 
+          <Input 
             value={newFeature}
             onChange={(e) => setNewFeature(e.target.value)}
-            className="flex-1 px-4 py-2.5 rounded-xl glass-input"
             placeholder="e.g. JWT User Authentication"
           />
-          <button type="submit" className="bg-white/10 text-white px-4 rounded-xl hover:bg-violet-500/20 border border-white/10 hover:border-violet-500/50 hover:text-violet-400 transition-all cursor-pointer">
-            <Plus size={20} />
-          </button>
+          <Button type="submit" variant="secondary" size="icon">
+            <Plus size={18} />
+          </Button>
         </form>
 
-        <ul className="space-y-2.5">
+        <ul className="space-y-2 pt-2">
           {projectData.features.map((feature, i) => (
-            <li key={i} className="group flex items-center justify-between bg-slate-900/50 border border-white/5 hover:border-violet-500/30 px-4 py-3 rounded-xl text-sm text-slate-300 transition-all">
-              <span className="flex items-center gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-violet-500/50 group-hover:bg-violet-400 group-hover:shadow-[0_0_8px_rgba(139,92,246,0.8)] transition-all"></span>
+            <li key={i} className="group flex items-center justify-between bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 px-3 py-2 rounded-md text-sm text-slate-700 dark:text-zinc-300">
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                 {feature}
               </span>
-              <button type="button" onClick={() => removeFeature(i)} className="text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all cursor-pointer">
+              <button type="button" onClick={() => removeFeature(i)} className="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
                 <X size={16} />
               </button>
             </li>
           ))}
-          {projectData.features.length === 0 && <li className="text-sm text-slate-500 italic ml-1">No features added yet.</li>}
+          {projectData.features.length === 0 && <li className="text-sm text-slate-500">No features added yet.</li>}
         </ul>
       </div>
 

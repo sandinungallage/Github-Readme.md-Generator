@@ -65,18 +65,17 @@ export default function Dashboard() {
       <div className="flex-1 grid lg:grid-cols-2 gap-6 min-h-[500px]">
         {/* Editor Side */}
         <motion.div 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
           className="flex flex-col"
         >
-          <Card className="flex-1 flex flex-col overflow-hidden border-slate-200 dark:border-slate-800 shadow-xl glass-panel">
-            <div className="border-b border-slate-200 dark:border-slate-800 p-4 bg-slate-50/50 dark:bg-slate-900/50">
-              <h2 className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+          <Card className="flex-1 flex flex-col overflow-hidden">
+            <div className="border-b border-slate-200 dark:border-zinc-800 p-4 bg-slate-50/50 dark:bg-zinc-900/50">
+              <h2 className="font-medium text-slate-800 dark:text-zinc-200 flex items-center gap-2">
                 Configuration
               </h2>
             </div>
-            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+            <div className="flex-1 overflow-y-auto p-5 custom-scrollbar">
               <Form projectData={projectData} setProjectData={setProjectData} />
             </div>
           </Card>
@@ -84,18 +83,18 @@ export default function Dashboard() {
 
         {/* Preview Side */}
         <motion.div 
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
           className="flex flex-col"
         >
-          <Card className="flex-1 flex flex-col overflow-hidden border-slate-200 dark:border-slate-800 shadow-xl glass-panel">
-            <div className="border-b border-slate-200 dark:border-slate-800 p-4 bg-slate-50/50 dark:bg-slate-900/50 flex justify-between items-center">
-              <h2 className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+          <Card className="flex-1 flex flex-col overflow-hidden">
+            <div className="border-b border-slate-200 dark:border-zinc-800 p-4 bg-slate-50/50 dark:bg-zinc-900/50 flex justify-between items-center">
+              <h2 className="font-medium text-slate-800 dark:text-zinc-200 flex items-center gap-2">
                 Live Preview
               </h2>
             </div>
-            <div className="flex-1 overflow-y-auto p-8 prose prose-slate dark:prose-invert max-w-none custom-scrollbar">
+            <div className="flex-1 overflow-y-auto p-8 prose prose-slate dark:prose-invert max-w-none custom-scrollbar bg-white dark:bg-zinc-950">
               <Preview markdown={markdownContent} />
             </div>
           </Card>

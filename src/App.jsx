@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useThemeStore } from './store/themeStore'
 import { useAuthStore } from './store/authStore'
 
-// We will create these next
 import AuthLayout from './layouts/AuthLayout'
 import DashboardLayout from './layouts/DashboardLayout'
 import Login from './pages/Login'
@@ -30,16 +29,18 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route element={<AuthLayout />}>
-            <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" />} />
+            <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" replace />} />
           </Route>
 
           {/* Protected Routes */}
-          <Route element={isAuthenticated ? <DashboardLayout /> : <Navigate to="/login" />}>
+          <Route element={isAuthenticated ? <DashboardLayout /> : <Navigate to="/login" replace />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
-            {/* Default redirect */}
-            <Route path="/" element={<Navigate to="/dashboard" />} />
           </Route>
+
+          {/* Catch-all redirect */}
+          <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
+          <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
         </Routes>
       </Router>
       <ToastContainer />
