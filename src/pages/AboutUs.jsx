@@ -1,13 +1,14 @@
 import { motion } from 'framer-motion'
 import { Link2, Mail, Code2, Users, Rocket, Sparkles } from 'lucide-react'
 import { Card, CardContent } from '../components/common/Card'
+import DeveloperImg from '../assets/Developer.jpg'
 
 export default function AboutUs() {
   const team = [
     {
       name: "Sandinu Nethmika",
       role: "Lead Engineer & Founder",
-      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sandin",
+      image: DeveloperImg,
       github: "https://github.com/sandinungallage",
       linkedin: "https://www.linkedin.com/in/sandinungallage",
       email: "mailto:sandinunethmika.g@gmail.com"
@@ -95,22 +96,29 @@ export default function AboutUs() {
 
         <div className="flex justify-center">
           {team.map((member, idx) => (
-            <Card key={idx} className="overflow-hidden max-w-sm w-full text-center hover:shadow-lg transition-shadow">
-              <div className="h-32 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
-              <CardContent className="px-6 pb-6 pt-0 relative">
-                <div className="w-24 h-24 mx-auto -mt-12 rounded-full border-4 border-white dark:border-zinc-950 bg-slate-100 dark:bg-zinc-800 overflow-hidden mb-4 shadow-md">
-                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+            <Card key={idx} className="overflow-hidden max-w-sm w-full text-center group bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md border border-slate-200/50 dark:border-zinc-800/50 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+              <div className="relative h-32 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-600 opacity-90 group-hover:scale-105 transition-transform duration-500"></div>
+                <div className="absolute inset-0 bg-black/10"></div>
+              </div>
+              <CardContent className="px-6 pb-8 pt-0 relative">
+                <div className="relative w-28 h-28 mx-auto -mt-14 mb-5">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 to-indigo-400 animate-pulse blur-md opacity-40 group-hover:opacity-70 transition-opacity duration-300"></div>
+                  <div className="relative w-full h-full rounded-full border-[5px] border-white dark:border-zinc-900 bg-slate-100 dark:bg-zinc-800 overflow-hidden shadow-lg">
+                    <img src={member.image} alt={member.name} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-zinc-100">{member.name}</h3>
-                <p className="text-sm font-medium text-blue-600 dark:text-blue-400 mb-4">{member.role}</p>
-                <div className="flex justify-center gap-3">
-                  <a href={member.github} target="_blank" rel="noopener noreferrer" title="GitHub" className="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-zinc-100 transition-colors bg-slate-50 dark:bg-zinc-900 rounded-full">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">{member.name}</h3>
+                <p className="text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 mb-6">{member.role}</p>
+                
+                <div className="flex justify-center gap-4">
+                  <a href={member.github} target="_blank" rel="noopener noreferrer" title="GitHub" className="p-3 text-slate-500 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-white transition-all bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 rounded-full hover:scale-110 shadow-sm">
                     <Link2 size={18} />
                   </a>
-                  <a href={member.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn" className="p-2 text-slate-400 hover:text-blue-500 transition-colors bg-slate-50 dark:bg-zinc-900 rounded-full">
+                  <a href={member.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn" className="p-3 text-slate-500 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 transition-all bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 rounded-full hover:scale-110 shadow-sm">
                     <Link2 size={18} />
                   </a>
-                  <a href={member.email} className="p-2 text-slate-400 hover:text-red-500 transition-colors bg-slate-50 dark:bg-zinc-900 rounded-full">
+                  <a href={member.email} title="Email" className="p-3 text-slate-500 hover:text-red-500 dark:text-zinc-400 dark:hover:text-red-400 transition-all bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 rounded-full hover:scale-110 shadow-sm">
                     <Mail size={18} />
                   </a>
                 </div>
