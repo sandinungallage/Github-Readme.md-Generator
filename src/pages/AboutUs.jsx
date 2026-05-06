@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion'
 import { Link2, Mail, Code2, Users, Rocket, Sparkles } from 'lucide-react'
 import { Card, CardContent } from '../components/common/Card'
+import { useToastStore } from '../store/toastStore'
 import DeveloperImg from '../assets/Developer.jpg'
 
 export default function AboutUs() {
+  const addToast = useToastStore((state) => state.addToast)
+
   const team = [
     {
       name: "Sandinu Nethmika",
@@ -11,7 +14,7 @@ export default function AboutUs() {
       image: DeveloperImg,
       github: "https://github.com/sandinungallage",
       linkedin: "https://www.linkedin.com/in/sandinungallage",
-      email: "mailto:sandinunethmika.g@gmail.com"
+      email: "sandinunethmika.g@gmail.com"
     }
   ]
 
@@ -20,6 +23,11 @@ export default function AboutUs() {
     { label: "READMEs Generated", value: "50k+", icon: FileTextIcon },
     { label: "Time Saved (hrs)", value: "25k+", icon: ClockIcon }
   ]
+
+  const handleCopyEmail = (email) => {
+    navigator.clipboard.writeText(email)
+    addToast({ title: 'Copied!', description: 'Email address copied to clipboard.', type: 'success' })
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-12 pb-12">
@@ -118,7 +126,7 @@ export default function AboutUs() {
                   <a href={member.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn" className="p-3 text-slate-500 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 transition-all bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 rounded-full hover:scale-110 shadow-sm">
                     <Link2 size={18} />
                   </a>
-                  <a href={member.email} title="Email" className="p-3 text-slate-500 hover:text-red-500 dark:text-zinc-400 dark:hover:text-red-400 transition-all bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 rounded-full hover:scale-110 shadow-sm">
+                  <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${member.email}`} target="_blank" rel="noopener noreferrer" title="Open Gmail" className="p-3 text-slate-500 hover:text-red-500 dark:text-zinc-400 dark:hover:text-red-400 transition-all bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 rounded-full hover:scale-110 shadow-sm focus:outline-none">
                     <Mail size={18} />
                   </a>
                 </div>
